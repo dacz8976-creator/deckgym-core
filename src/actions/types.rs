@@ -78,6 +78,13 @@ pub enum SimpleAction {
         energy_type: EnergyType,
         max_heads: usize,
     },
+    /// The Pokémon is chosen first; then flip a coin until tails and, for each heads (at most
+    /// `max_heads`), heal `amount_per_heads` damage from it (Sweet Honey).
+    FlipUntilTailsThenHeal {
+        in_play_idx: usize,
+        amount_per_heads: u32,
+        max_heads: usize,
+    },
     MoveAllDamage {
         from: usize,
         to: usize,
@@ -373,6 +380,14 @@ impl fmt::Display for SimpleAction {
             } => write!(
                 f,
                 "FlipUntilTailsThenAttach({in_play_idx}, {energy_type:?}, max:{max_heads})"
+            ),
+            SimpleAction::FlipUntilTailsThenHeal {
+                in_play_idx,
+                amount_per_heads,
+                max_heads,
+            } => write!(
+                f,
+                "FlipUntilTailsThenHeal({in_play_idx}, {amount_per_heads}, max:{max_heads})"
             ),
             SimpleAction::HealAndDiscardEnergy {
                 in_play_idx,
